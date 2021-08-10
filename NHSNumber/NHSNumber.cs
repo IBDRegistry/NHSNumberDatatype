@@ -14,6 +14,10 @@ namespace NHSNumberDatatype
 
         private Digit[] ConvertFromString(string StringNHSNumber)
         {
+            if (StringNHSNumber.Contains(" "))
+            {
+                StringNHSNumber = StringNHSNumber.Replace(" ", "");
+            }
             if (StringNHSNumber.IsNumeric() != true)
             {
                 throw new TypeLoadException("NHS Number was not numeric");

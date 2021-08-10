@@ -10,7 +10,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            NHSNumberDatatype.NHSNumber TestNHSNumber = "8707524692";
+            NHSNumberDatatype.NHSNumber TestNHSNumber = "870 752 4692";
         }
     }
 }
