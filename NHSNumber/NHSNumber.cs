@@ -22,6 +22,10 @@ namespace NHSNumberDatatype
             {
                 throw new TypeLoadException("NHS Number was not numeric");
             }
+            if (StringNHSNumber.Length != 10)
+            {
+                throw new TypeLoadException("NHS Number was not 10 digits long");
+            }
             char[] CharArray = StringNHSNumber.ToCharArray();
             string[] letters = Array.ConvertAll(CharArray, item => item.ToString());
             Digit[] digits = Array.ConvertAll(letters, item => (Digit)item);
