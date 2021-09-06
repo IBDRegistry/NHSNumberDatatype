@@ -12,8 +12,21 @@ namespace NHSNumberDatatype
         public static implicit operator NHSNumber(string StringToUse) => new NHSNumber(StringToUse);
         public static explicit operator string(NHSNumber NHSNumberToCast) => NHSNumberToCast.GetNHSNumberAsString();
 
-        private Digit[] ConvertFromString(string StringNHSNumber)
+        public static implicit operator NHSNumber(int IntToConvert) => new NHSNumber(IntToConvert);
+
+        private string GetNHSNumberAsString()
         {
+            string[] LetterArrayOfNHSNumber = Array.ConvertAll(value, item => (string)item);
+            return string.Join("", LetterArrayOfNHSNumber);
+        }
+        private string FormatNHSNumber()
+        {
+            string StringOfValue = GetNHSNumberAsString();
+            return StringOfValue.Substring(0, 3) + " " + StringOfValue.Substring(3, 3) + " " + StringOfValue.Substring(6, 4);
+        }
+        public NHSNumber(string StringNHSNumber)
+        {
+            #region "Exceptions"
             if (StringNHSNumber.Contains(" "))
             {
                 StringNHSNumber = StringNHSNumber.Replace(" ", "");
@@ -26,28 +39,22 @@ namespace NHSNumberDatatype
             {
                 throw new TypeLoadException("NHS Number was not 10 digits long");
             }
+            #endregion
+
             char[] CharArray = StringNHSNumber.ToCharArray();
             string[] letters = Array.ConvertAll(CharArray, item => item.ToString());
             Digit[] digits = Array.ConvertAll(letters, item => (Digit)item);
-            return digits;
+            value = digits;
         }
 
-        private string GetNHSNumberAsString()
+        public NHSNumber(int IntNHSNumber)
         {
-            string[] LetterArrayOfNHSNumber = Array.ConvertAll(value, item => (string)item);
-            return string.Join("", LetterArrayOfNHSNumber);
+            value = IntNHSNumber.ToArray();
         }
-        private string FormatNHSNumber()
+
+        public NHSNumber(long LongNHSNumber)
         {
-            string StringOfValue = GetNHSNumberAsString();
-            return StringOfValue.Substring(0, 3) + " " + StringOfValue.Substring(3, 3) + " " + StringOfValue.Substring(6, 4);
-        }
-        public NHSNumber(string NHSNumberToUse = null)
-        {
-            if (NHSNumberToUse != null)
-            {
-                value = ConvertFromString(NHSNumberToUse);
-            }
+            value = LongNHSNumber.ToArray();
         }
 
         public override string ToString()

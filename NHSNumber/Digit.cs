@@ -23,6 +23,7 @@ namespace NHSNumberDatatype
 
         public static explicit operator Digit(byte b) => new Digit(b);
         public static implicit operator Digit(int IntDigit) => new Digit((byte)IntDigit);
+        public static explicit operator Digit(long LongDigit) => new Digit((byte)LongDigit);
         public static explicit operator Digit(string letter) => int.Parse(letter);
 
         public override string ToString() => $"{digit}";
