@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace NhsNumberDatatype;
 
-public readonly struct NhsNumber : IParsable<NhsNumber>
+public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
 {
     private static readonly int[] Weights = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
@@ -132,5 +132,30 @@ public readonly struct NhsNumber : IParsable<NhsNumber>
 
         result = default!;
         return false;
+    }
+
+    public bool Equals(NhsNumber other)
+    {
+        return _value == other._value;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is NhsNumber other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return _value.GetHashCode();
+    }
+    
+    public static bool operator ==(NhsNumber left, NhsNumber right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(NhsNumber left, NhsNumber right)
+    {
+        return !(left == right);
     }
 }
