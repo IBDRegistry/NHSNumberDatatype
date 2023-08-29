@@ -7,6 +7,14 @@
         <RootNamespace>NhsNumberDatatype</RootNamespace>
         <Version>0.1.0</Version>
         <PackageProjectUrl>https://github.com/IBDRegistry/NHSNumberDatatype</PackageProjectUrl>
+
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+        <Description> A datatype which can be used to validate NHS numbers from string </Description>
+
+        <RepositoryUrl>https://github.com/IBDRegistry/NHSNumberDatatype</RepositoryUrl>
+
+        <RepositoryType>GitHub</RepositoryType>
     </PropertyGroup>
 
 
