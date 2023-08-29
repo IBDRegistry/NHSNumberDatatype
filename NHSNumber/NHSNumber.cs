@@ -1,17 +1,23 @@
+using System.Globalization;
+
 namespace NhsNumber;
 
-public class NhsNumber : IParsable<NhsNumber>
+public struct NhsNumber : ISpanParsable<NhsNumber>
 {
+    private static readonly int[] Weights = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+    
     private readonly string _value;
 
     public NhsNumber(string value)
     {
-        if (!IsValidNhsNumber(value, out var clean))
+        var clean = CleanNhsNumber(value);
+        
+        if (!IsValidNhsNumber(clean))
         {
             throw new ArgumentException("Invalid NHS Number", nameof(value));
         }
 
-        _value = clean;
+        _value = clean.ToString();
     }
 
     public override string ToString() => string.Join(string.Empty, _value);
@@ -24,22 +30,23 @@ public class NhsNumber : IParsable<NhsNumber>
 
     public static implicit operator NhsNumber(string str) => Parse(str);
 
-    public static NhsNumber Parse(string s, IFormatProvider? provider = null)
+    public static NhsNumber Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
     {
-        if (string.IsNullOrWhiteSpace(s))
-            throw new ArgumentNullException(nameof(s));
+        if (!TryParse(s, provider, out var result))
+        {
+            throw new FormatException("Invalid NHS Number");
+        }
 
-        if (!IsValidNhsNumber(s, out var clean))
-            throw new FormatException("Invalid NHS Number format.");
-
-        return new NhsNumber(clean);
+        return result;
     }
 
-    public static bool TryParse(string? str, IFormatProvider? provider, out NhsNumber result)
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out NhsNumber result)
     {
-        if (IsValidNhsNumber(str, out var clean))
+        var clean = CleanNhsNumber(s);
+        
+        if (IsValidNhsNumber(clean))
         {
-            result = new NhsNumber(clean);
+            result = new NhsNumber(clean.ToString());
             return true;
         }
 
@@ -47,54 +54,66 @@ public class NhsNumber : IParsable<NhsNumber>
         return false;
     }
 
-    private static bool IsValidNhsNumber(string? value, out string cleaned)
+    private static ReadOnlySpan<char> CleanNhsNumber(ReadOnlySpan<char> value)
     {
-        if (string.IsNullOrWhiteSpace(value))
+        var newSpan = new char[10];
+        var newIndex = 0;
+
+        for (var i = 0; i < value.Length && newIndex < 10; i++)
         {
-            cleaned = string.Empty;
-            return false;
+            var current = value[i];
+            if (current != ' ' && current != '-')
+            {
+                newSpan[newIndex++] = current;
+            }
         }
 
-        // Remove any formatting characters if needed (e.g., dashes, spaces)
-        value = value
-            .Replace(" ", string.Empty)
-            .Replace("-", string.Empty);
+        // Ensure the span is exactly 10 characters long
+        if (newIndex != 10)
+        {
+            throw new ArgumentException("The cleaned NHS number must be exactly 10 digits.");
+        }
+
+        return newSpan;
+    }
+
+    private static bool IsValidNhsNumber(ReadOnlySpan<char> value)
+    {
+        if (value.IsWhiteSpace())
+            return false;
 
         // Check for null or incorrect length
-        if (string.IsNullOrWhiteSpace(value) || value.Length != 10)
-        {
-            cleaned = string.Empty;
+        if (value.Length != 10)
             return false;
-        }
 
         // Ensure all characters are digits
-        if (value.Any(c => !char.IsDigit(c)))
+        foreach (var c in value)
         {
-            cleaned = string.Empty;
+            if (char.IsDigit(c))
+                continue;
+
             return false;
         }
 
         // Validate the check digit (last digit in the number)
         var checkDigit = CalculateCheckDigit(value);
-        if (checkDigit != int.Parse(value[^1..]))
+
+        if (checkDigit != CharUnicodeInfo.GetDecimalDigitValue(value[^1]))
         {
-            cleaned = string.Empty;
             return false;
         }
 
-        cleaned = value;
         return true;
     }
 
-    private static int CalculateCheckDigit(string digits)
+    private static int CalculateCheckDigit(ReadOnlySpan<char> digits)
     {
-        var weights = new[] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
         var sum = 0;
 
         // Compute the weighted sum
         for (var i = 0; i < 9; i++)
         {
-            sum += (digits[i] - '0') * weights[i];
+            sum += (digits[i] - '0') * Weights[i];
         }
 
         // Compute the check digit
@@ -114,5 +133,15 @@ public class NhsNumber : IParsable<NhsNumber>
         }
 
         return checkDigit;
+    }
+
+    public static NhsNumber Parse(string s, IFormatProvider? provider = null)
+    {
+        return Parse(s.AsSpan(), provider);
+    }
+
+    public static bool TryParse(string? s, IFormatProvider? provider, out NhsNumber result)
+    {
+        return TryParse(s.AsSpan(), provider, out result);
     }
 }

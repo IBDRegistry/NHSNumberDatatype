@@ -2,7 +2,8 @@ namespace NhsNumber.Tests;
 
 public class NhsNumberTests
 {
-    private readonly string[] _validNhsNumbers = {
+    private readonly string[] _validNhsNumbers =
+    {
         "943 579 7881",
         "943 579 2103",
         "943 574 0820",
@@ -59,5 +60,22 @@ public class NhsNumberTests
             var result = NhsNumber.Parse(nhsNumber);
             Assert.That(result.ToSpacedString(), Is.EqualTo(nhsNumber));
         }
+    }
+
+    [Test]
+    public void TryParse_StringWithNumbers_ReturnsFalse()
+    {
+        // Arrange
+        const string str = "123 abc 7890";
+
+        // Act
+        var parsed = NhsNumber.TryParse(str, null, out var result);
+        
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(parsed, Is.False);
+            Assert.That(result, Is.EqualTo(default(NhsNumber)));
+        });
     }
 }

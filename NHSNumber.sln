@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumber", "NhsNumber\NhsN
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumber.Tests", "NhsNumber.Tests\NhsNumber.Tests.csproj", "{2A45D6CB-D834-4DBB-A7DE-2D94AF5E359A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumber.Benchmarks", "NhsNumber.Benchmarks\NhsNumber.Benchmarks.csproj", "{D5D5914E-E62C-4B58-91C7-FA6206179DEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{2A45D6CB-D834-4DBB-A7DE-2D94AF5E359A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A45D6CB-D834-4DBB-A7DE-2D94AF5E359A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A45D6CB-D834-4DBB-A7DE-2D94AF5E359A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5D5914E-E62C-4B58-91C7-FA6206179DEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D5914E-E62C-4B58-91C7-FA6206179DEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D5914E-E62C-4B58-91C7-FA6206179DEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D5914E-E62C-4B58-91C7-FA6206179DEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
