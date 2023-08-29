@@ -31,10 +31,10 @@ public readonly struct NhsNumber : IParsable<NhsNumber>
         Span<char> span = stackalloc char[value.Length];
         value.AsSpan().CopyTo(span);
         
-        int writeIndex = 0;
+        var writeIndex = 0;
         
         // Iterate through the original string to populate the span without dashes and spaces
-        for (int readIndex = 0; readIndex < span.Length; readIndex++)
+        for (var readIndex = 0; readIndex < span.Length; readIndex++)
         {
             if (span[readIndex] != ' ' && span[readIndex] != '-')
             {
