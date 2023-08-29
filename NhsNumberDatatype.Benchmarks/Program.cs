@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using BenchmarkDotNet.Running;
-using NhsNumber.Benchmarks;
+using NhsNumberDatatype.Benchmarks;
 
 BenchmarkRunner.Run<ParseBenchmarks>();

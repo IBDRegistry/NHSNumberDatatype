@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumber", "NhsNumber\NhsNumber.csproj", "{28C85215-F7BD-4A5B-AC7F-C13B4393C135}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumberDatatype", "NhsNumberDatatype\NhsNumberDatatype.csproj", "{28C85215-F7BD-4A5B-AC7F-C13B4393C135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumber.Tests", "NhsNumber.Tests\NhsNumber.Tests.csproj", "{2A45D6CB-D834-4DBB-A7DE-2D94AF5E359A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumberDatatype.Tests", "NhsNumberDatatype.Tests\NhsNumberDatatype.Tests.csproj", "{2A45D6CB-D834-4DBB-A7DE-2D94AF5E359A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumber.Benchmarks", "NhsNumber.Benchmarks\NhsNumber.Benchmarks.csproj", "{D5D5914E-E62C-4B58-91C7-FA6206179DEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NhsNumberDatatype.Benchmarks", "NhsNumberDatatype.Benchmarks\NhsNumberDatatype.Benchmarks.csproj", "{D5D5914E-E62C-4B58-91C7-FA6206179DEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,4 @@
-namespace NhsNumber.Tests;
+namespace NhsNumberDatatype.Tests;
 
 public class NhsNumberTests
 {
