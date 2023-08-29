@@ -13,14 +13,13 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
         _value = value;
     }
 
-    public override string ToString() => string.Join(string.Empty, _value);
+    public override string ToString() => _value;
 
     public string ToSpacedString()
     {
-        var str = ToString();
-        return str[..3] + " " + str.Substring(3, 3) + " " + str.Substring(6, 4);
+        return _value[..3] + " " + _value.Substring(3, 3) + " " + _value.Substring(6, 4);
     }
-    
+
     /// <summary>
     /// Given an NHS Number which may have spaces or dashes, clean it to be a 10 digit number
     /// </summary>
