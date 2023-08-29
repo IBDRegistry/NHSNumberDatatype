@@ -1,6 +1,6 @@
 using BenchmarkDotNet.Attributes;
 
-namespace NhsNumber.Benchmarks;
+namespace NhsNumberDatatype.Benchmarks;
 
 [MemoryDiagnoser(false)]
 public class ParseBenchmarks

@@ -1,14 +1,14 @@
 using System.Globalization;
 
-namespace NhsNumber;
+namespace NhsNumberDatatype;
 
-public struct NhsNumber : ISpanParsable<NhsNumber>
+public readonly struct NhsNumber : ISpanParsable<NhsNumber>
 {
     private static readonly int[] Weights = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
     
     private readonly string _value;
 
-    public NhsNumber(string value)
+    private NhsNumber(string value)
     {
         var clean = CleanNhsNumber(value);
         
@@ -56,6 +56,7 @@ public struct NhsNumber : ISpanParsable<NhsNumber>
 
     private static ReadOnlySpan<char> CleanNhsNumber(ReadOnlySpan<char> value)
     {
+        
         var newSpan = new char[10];
         var newIndex = 0;
 

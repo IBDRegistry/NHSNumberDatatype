@@ -5,10 +5,11 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <RootNamespace>NhsNumberDatatype.Benchmarks</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NhsNumber\NhsNumber.csproj" />
+      <ProjectReference Include="..\NhsNumberDatatype\NhsNumberDatatype.csproj" />
     </ItemGroup>
 
     <ItemGroup>
