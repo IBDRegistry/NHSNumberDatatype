@@ -5,19 +5,12 @@ namespace NhsNumberDatatype;
 public readonly struct NhsNumber : ISpanParsable<NhsNumber>
 {
     private static readonly int[] Weights = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-    
+
     private readonly string _value;
 
     private NhsNumber(string value)
     {
-        var clean = CleanNhsNumber(value);
-        
-        if (!IsValidNhsNumber(clean))
-        {
-            throw new ArgumentException("Invalid NHS Number", nameof(value));
-        }
-
-        _value = clean.ToString();
+        _value = value;
     }
 
     public override string ToString() => string.Join(string.Empty, _value);
@@ -27,8 +20,6 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
         var str = ToString();
         return str[..3] + " " + str.Substring(3, 3) + " " + str.Substring(6, 4);
     }
-
-    public static implicit operator NhsNumber(string str) => Parse(str);
 
     public static NhsNumber Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
     {
@@ -43,7 +34,7 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out NhsNumber result)
     {
         var clean = CleanNhsNumber(s);
-        
+
         if (IsValidNhsNumber(clean))
         {
             result = new NhsNumber(clean.ToString());
@@ -56,7 +47,7 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
 
     private static ReadOnlySpan<char> CleanNhsNumber(ReadOnlySpan<char> value)
     {
-        
+
         var newSpan = new char[10];
         var newIndex = 0;
 
@@ -145,4 +136,8 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
     {
         return TryParse(s.AsSpan(), provider, out result);
     }
+
+    public static implicit operator NhsNumber(string str) => Parse(str);
+    public static implicit operator string(NhsNumber nhsNumber) => nhsNumber.ToString();
+    public static implicit operator NhsNumber(int intValue) => new(intValue.ToString());
 }
