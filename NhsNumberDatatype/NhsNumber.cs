@@ -60,12 +60,6 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
             }
         }
 
-        // Ensure the span is exactly 10 characters long
-        if (newIndex != 10)
-        {
-            throw new ArgumentException("The cleaned NHS number must be exactly 10 digits.");
-        }
-
         return newSpan;
     }
 
@@ -136,8 +130,4 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
     {
         return TryParse(s.AsSpan(), provider, out result);
     }
-
-    public static implicit operator NhsNumber(string str) => Parse(str);
-    public static implicit operator string(NhsNumber nhsNumber) => nhsNumber.ToString();
-    public static implicit operator NhsNumber(int intValue) => new(intValue.ToString());
 }

@@ -52,7 +52,20 @@ public class NhsNumberTests
     };
 
     [Test]
-    public void AllValidNhsStrings_ReturnValidNhsNumber()
+    public void AllValidNhsStrings_WithoutSpaces_ReturnValidNhsNumber()
+    {
+        // Assert
+        foreach (var nhsNumber in _validNhsNumbers)
+        {
+            var nhsNumberNoSpaces = nhsNumber.Replace(" ", string.Empty);
+            
+            var result = NhsNumber.Parse(nhsNumberNoSpaces);
+            Assert.That(result.ToString(), Is.EqualTo(nhsNumberNoSpaces));
+        }
+    }
+    
+    [Test]
+    public void AllValidNhsStrings_WithSpaces_ReturnValidNhsNumber()
     {
         // Assert
         foreach (var nhsNumber in _validNhsNumbers)
@@ -68,6 +81,23 @@ public class NhsNumberTests
         // Arrange
         const string str = "123 abc 7890";
 
+        // Act
+        var parsed = NhsNumber.TryParse(str, null, out var result);
+        
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(parsed, Is.False);
+            Assert.That(result, Is.EqualTo(default(NhsNumber)));
+        });
+    }
+
+    [Test]
+    public void TryParse_WithEmptyString_ReturnsFalse()
+    {
+        // Arrange
+        const string str = "";
+        
         // Act
         var parsed = NhsNumber.TryParse(str, null, out var result);
         
