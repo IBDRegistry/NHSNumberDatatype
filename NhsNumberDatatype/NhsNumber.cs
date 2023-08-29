@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace NhsNumberDatatype;
 
-public readonly struct NhsNumber : ISpanParsable<NhsNumber>
+public readonly struct NhsNumber : IParsable<NhsNumber>
 {
     private static readonly int[] Weights = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
@@ -20,47 +20,30 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
         var str = ToString();
         return str[..3] + " " + str.Substring(3, 3) + " " + str.Substring(6, 4);
     }
-
-    public static NhsNumber Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    
+    /// <summary>
+    /// Given an NHS Number which may have spaces or dashes, clean it to be a 10 digit number
+    /// </summary>
+    /// <param name="value"></param>
+    private static void CleanNhsNumber(ref string value)
     {
-        if (!TryParse(s, provider, out var result))
+        // Convert the string to a mutable span of characters
+        Span<char> span = stackalloc char[value.Length];
+        value.AsSpan().CopyTo(span);
+        
+        int writeIndex = 0;
+        
+        // Iterate through the original string to populate the span without dashes and spaces
+        for (int readIndex = 0; readIndex < span.Length; readIndex++)
         {
-            throw new FormatException("Invalid NHS Number");
-        }
-
-        return result;
-    }
-
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out NhsNumber result)
-    {
-        var clean = CleanNhsNumber(s);
-
-        if (IsValidNhsNumber(clean))
-        {
-            result = new NhsNumber(clean.ToString());
-            return true;
-        }
-
-        result = default!;
-        return false;
-    }
-
-    private static ReadOnlySpan<char> CleanNhsNumber(ReadOnlySpan<char> value)
-    {
-
-        var newSpan = new char[10];
-        var newIndex = 0;
-
-        for (var i = 0; i < value.Length && newIndex < 10; i++)
-        {
-            var current = value[i];
-            if (current != ' ' && current != '-')
+            if (span[readIndex] != ' ' && span[readIndex] != '-')
             {
-                newSpan[newIndex++] = current;
+                span[writeIndex++] = span[readIndex];
             }
         }
-
-        return newSpan;
+        
+        // Convert the populated span back to a string
+        value = new string(span[..writeIndex]);
     }
 
     private static bool IsValidNhsNumber(ReadOnlySpan<char> value)
@@ -123,11 +106,31 @@ public readonly struct NhsNumber : ISpanParsable<NhsNumber>
 
     public static NhsNumber Parse(string s, IFormatProvider? provider = null)
     {
-        return Parse(s.AsSpan(), provider);
+        if (!TryParse(s, provider, out var result))
+        {
+            throw new FormatException("Invalid NHS Number");
+        }
+
+        return result;
     }
 
     public static bool TryParse(string? s, IFormatProvider? provider, out NhsNumber result)
     {
-        return TryParse(s.AsSpan(), provider, out result);
+        if (s == null)
+        {
+            result = default!;
+            return false;
+        }
+
+        CleanNhsNumber(ref s);
+
+        if (IsValidNhsNumber(s))
+        {
+            result = new NhsNumber(s);
+            return true;
+        }
+
+        result = default!;
+        return false;
     }
 }
