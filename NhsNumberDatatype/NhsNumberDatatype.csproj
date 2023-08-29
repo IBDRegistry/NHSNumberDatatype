@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>NhsNumberDatatype</RootNamespace>
+        <Version>0.1.0</Version>
+        <PackageProjectUrl>https://github.com/IBDRegistry/NHSNumberDatatype</PackageProjectUrl>
+    </PropertyGroup>
+
+
+</Project>
