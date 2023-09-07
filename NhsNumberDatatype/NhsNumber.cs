@@ -24,25 +24,22 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
     /// Given an NHS Number which may have spaces or dashes, clean it to be a 10 digit number
     /// </summary>
     /// <param name="value"></param>
-    private static void CleanNhsNumber(ref string value)
+    /// <param name="destination"></param>
+    public static void CleanNhsNumber(ReadOnlySpan<char> value, Span<char> destination)
     {
-        // Convert the string to a mutable span of characters
-        Span<char> span = stackalloc char[value.Length];
-        value.AsSpan().CopyTo(span);
+        if (destination.Length != 10)
+            throw new ArgumentException("Destination must be 10 characters long", nameof(destination));
         
         var writeIndex = 0;
         
         // Iterate through the original string to populate the span without dashes and spaces
-        for (var readIndex = 0; readIndex < span.Length; readIndex++)
+        foreach (var c in value)
         {
-            if (span[readIndex] != ' ' && span[readIndex] != '-')
+            if (c != ' ' && c != '-')
             {
-                span[writeIndex++] = span[readIndex];
+                destination[writeIndex++] = c;
             }
         }
-        
-        // Convert the populated span back to a string
-        value = new string(span[..writeIndex]);
     }
 
     private static bool IsValidNhsNumber(ReadOnlySpan<char> value)
@@ -117,19 +114,20 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
     {
         if (s == null)
         {
-            result = default!;
+            result = default;
             return false;
         }
 
-        CleanNhsNumber(ref s);
+        Span<char> destination = stackalloc char[10];
+        CleanNhsNumber(s, destination);
 
-        if (IsValidNhsNumber(s))
+        if (IsValidNhsNumber(destination))
         {
-            result = new NhsNumber(s);
+            result = new NhsNumber(destination.ToString());
             return true;
         }
 
-        result = default!;
+        result = default;
         return false;
     }
 
