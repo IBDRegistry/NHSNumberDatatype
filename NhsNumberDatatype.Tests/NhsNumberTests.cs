@@ -108,4 +108,36 @@ public class NhsNumberTests
             Assert.That(result, Is.EqualTo(default(NhsNumber)));
         });
     }
+
+    [Test]
+    public void TryParse_With11Characters_ReturnsFalse()
+    {
+        // Arrange
+        const string str = "12345678901";
+        
+        // Act
+        var parsed = NhsNumber.TryParse(str, null, out var result);
+        
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(parsed, Is.False);
+        });
+    }
+    
+    [Test]
+    public void TryParse_With11CharactersAndSpaces_ReturnsFalse()
+    {
+        // Arrange
+        const string str = "123 456 78901";
+        
+        // Act
+        var parsed = NhsNumber.TryParse(str, null, out var result);
+        
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(parsed, Is.False);
+        });
+    }
 }

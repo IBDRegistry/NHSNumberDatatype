@@ -25,21 +25,13 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
     /// </summary>
     /// <param name="value"></param>
     /// <param name="destination"></param>
-    public static void CleanNhsNumber(ReadOnlySpan<char> value, Span<char> destination)
+    public static string CleanNhsNumber(string value)
     {
-        if (destination.Length != 10)
-            throw new ArgumentException("Destination must be 10 characters long", nameof(destination));
-        
-        var writeIndex = 0;
-        
-        // Iterate through the original string to populate the span without dashes and spaces
-        foreach (var c in value)
-        {
-            if (c != ' ' && c != '-')
-            {
-                destination[writeIndex++] = c;
-            }
-        }
+        value = value.Trim();
+        value = value.Replace(" ", string.Empty);
+        value = value.Replace("-", string.Empty);
+
+        return value;
     }
 
     private static bool IsValidNhsNumber(ReadOnlySpan<char> value)
@@ -63,12 +55,7 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
         // Validate the check digit (last digit in the number)
         var checkDigit = CalculateCheckDigit(value);
 
-        if (checkDigit != CharUnicodeInfo.GetDecimalDigitValue(value[^1]))
-        {
-            return false;
-        }
-
-        return true;
+        return checkDigit == CharUnicodeInfo.GetDecimalDigitValue(value[^1]);
     }
 
     private static int CalculateCheckDigit(ReadOnlySpan<char> digits)
@@ -112,18 +99,17 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
 
     public static bool TryParse(string? s, IFormatProvider? provider, out NhsNumber result)
     {
-        if (s == null)
+        if (s is null)
         {
             result = default;
             return false;
         }
+        
+        s = CleanNhsNumber(s);
 
-        Span<char> destination = stackalloc char[10];
-        CleanNhsNumber(s, destination);
-
-        if (IsValidNhsNumber(destination))
+        if (IsValidNhsNumber(s))
         {
-            result = new NhsNumber(destination.ToString());
+            result = new NhsNumber(s);
             return true;
         }
 

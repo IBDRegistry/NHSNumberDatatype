@@ -12,9 +12,10 @@ public class ParseBenchmarks
     }
     
     [Benchmark]
-    public void ParseNhsNumberWithValidation()
+    public string ParseNhsNumberWithValidation()
     {
-        Span<char> destination = stackalloc char[10];
-        NhsNumber.CleanNhsNumber("943 579 7881", destination);
+        var val = NhsNumber.CleanNhsNumber("943 579 7881");
+
+        return val;
     }
 }
