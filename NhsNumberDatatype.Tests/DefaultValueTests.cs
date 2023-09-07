@@ -7,7 +7,14 @@ public class DefaultValueTests
     {
         Assert.DoesNotThrow(() =>
         {
-            var val = default(NhsNumber);
+            var val = NhsNumber.None;
         });
+    }
+
+    [Test]
+    public void DefaultValue_HasSomeValue()
+    {
+        var val = NhsNumber.None;
+        Assert.That(string.IsNullOrEmpty(val.ToString()), Is.False);
     }
 }

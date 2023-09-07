@@ -6,7 +6,7 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
 {
     private static readonly int[] Weights = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-    private readonly string _value = "1234567881";
+    private readonly string _value;
 
     private NhsNumber(string value)
     {
@@ -155,4 +155,6 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
     {
         return !(left == right);
     }
+
+    public static readonly NhsNumber None = new("1234567889");
 }
