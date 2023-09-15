@@ -8,12 +8,13 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
 
     private readonly string _value;
 
-    private NhsNumber(string value)
+    public NhsNumber(string value)
     {
         _value = value;
     }
 
     public override string ToString() => _value;
+    public bool IsValid => IsValidNhsNumber(_value);
 
     public string ToSpacedString()
     {
@@ -33,7 +34,7 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
 
         return value;
     }
-
+    
     private static bool IsValidNhsNumber(ReadOnlySpan<char> value)
     {
         if (value.IsWhiteSpace())
@@ -104,7 +105,7 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
             result = default;
             return false;
         }
-        
+
         s = CleanNhsNumber(s);
 
         if (IsValidNhsNumber(s))
