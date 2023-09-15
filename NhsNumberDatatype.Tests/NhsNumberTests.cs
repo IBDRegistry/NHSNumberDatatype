@@ -140,4 +140,17 @@ public class NhsNumberTests
             Assert.That(parsed, Is.False);
         });
     }
+    
+    [Test]
+    public void GetHashCode_WithValue_DoesntThrow()
+    {
+        // Arrange
+        var nhsNumber = NhsNumber.Parse("123 456 7881");
+        
+        // Act
+        Assert.DoesNotThrow(() =>
+        {
+            var hashCode = nhsNumber.GetHashCode();
+        });
+    }
 }
