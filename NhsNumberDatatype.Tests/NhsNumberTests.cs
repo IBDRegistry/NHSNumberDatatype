@@ -52,6 +52,17 @@ public class NhsNumberTests
     };
     
     [Test]
+    public void AllValidNhsStrings_Constructor_CleansString()
+    {
+        // Assert
+        foreach (var nhsNumber in _validNhsNumbers)
+        {
+            var result = new NhsNumber(nhsNumber);
+            Assert.That(result.ToString(), Is.EqualTo(nhsNumber.Replace(" ", string.Empty)));
+        }
+    }
+    
+    [Test]
     public void AllValidNhsStrings_WithoutSpaces_ReturnValidNhsNumber()
     {
         // Assert
@@ -142,6 +153,7 @@ public class NhsNumberTests
         Assert.Multiple(() =>
         {
             Assert.That(parsed, Is.False);
+            Assert.That(parsed.ToString(), Is.EqualTo(str));
         });
     }
     
