@@ -153,7 +153,6 @@ public class NhsNumberTests
         Assert.Multiple(() =>
         {
             Assert.That(parsed, Is.False);
-            Assert.That(parsed.ToString(), Is.EqualTo(str));
         });
     }
     
