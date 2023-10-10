@@ -8,13 +8,15 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
 
     private readonly string _value;
 
+    public bool IsValid { get; }
+    
     public NhsNumber(string value)
     {
-        _value = value;
+        _value = CleanNhsNumber(value);
+        IsValid = IsValidNhsNumber(_value);
     }
 
     public override string ToString() => _value;
-    public bool IsValid => IsValidNhsNumber(_value);
 
     public string ToSpacedString()
     {
@@ -25,7 +27,6 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
     /// Given an NHS Number which may have spaces or dashes, clean it to be a 10 digit number
     /// </summary>
     /// <param name="value"></param>
-    /// <param name="destination"></param>
     public static string CleanNhsNumber(string value)
     {
         value = value.Trim();
@@ -142,6 +143,4 @@ public readonly struct NhsNumber : IParsable<NhsNumber>, IEquatable<NhsNumber>
     {
         return !(left == right);
     }
-
-    public static readonly NhsNumber None = new("1234567889");
 }

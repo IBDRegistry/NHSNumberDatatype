@@ -50,7 +50,7 @@ public class NhsNumberTests
         "9435769047",
         "9435753973",
     };
-
+    
     [Test]
     public void AllValidNhsStrings_WithoutSpaces_ReturnValidNhsNumber()
     {
@@ -58,9 +58,13 @@ public class NhsNumberTests
         foreach (var nhsNumber in _validNhsNumbers)
         {
             var nhsNumberNoSpaces = nhsNumber.Replace(" ", string.Empty);
-            
             var result = NhsNumber.Parse(nhsNumberNoSpaces);
-            Assert.That(result.ToString(), Is.EqualTo(nhsNumberNoSpaces));
+            
+            Assert.Multiple(() =>
+            {
+                Assert.That(result.ToString(), Is.EqualTo(nhsNumberNoSpaces));
+                Assert.That(result.IsValid, Is.True);
+            });
         }
     }
     
